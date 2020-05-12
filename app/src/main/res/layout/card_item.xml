@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <import type="com.example.shopifymatchinggame.model.CardStatus"/>
+        <variable
+            name="card"
+            type="com.example.shopifymatchinggame.model.Card" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="4dp"
+        app:cardElevation="2dp">
+
+        <ImageView
+            android:id="@+id/cardFaceUp"
+            android:layout_width="60dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="5dp"
+            android:contentDescription="@string/cardfaceup"
+            android:visibility="@{card.cardStatus == CardStatus.FACE_DOWN ? View.INVISIBLE : View.VISIBLE}"
+            app:imageUrl="@{card.products.image}" />
+
+        <ImageView
+            android:id="@+id/cardFaceDown"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/cardfacedown"
+            android:src="@drawable/ic_shopify_glyph"
+            android:visibility="@{card.cardStatus == CardStatus.FACE_DOWN ? View.VISIBLE : View.INVISIBLE}" />
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Game Settings">
+
+        <ListPreference
+            android:defaultValue="2"
+            android:entries="@array/card_matches_settings_list_titles"
+            android:entryValues="@array/card_matches_settings_list_values"
+            android:key="cardMatchesNumber"
+            android:summary="%s Cards"
+            android:icon="@drawable/ic_deck_1"
+            android:title="Card Matches"/>
+
+        <ListPreference
+            android:defaultValue="10"
+            android:entries="@array/grid_size_settings_list_titles"
+            android:entryValues="@array/grid_size_settings_list_values"
+            android:key="gridSizeNumber"
+            android:summary="%s Matches"
+            android:icon="@drawable/ic_grid"
+            android:title="Total Matches"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>
