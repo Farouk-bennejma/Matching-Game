@@ -16,11 +16,7 @@ class ShopifyMatchingGame: Application(), KodeinAware {
     override val kodein: Kodein = Kodein.lazy {
         import(androidXModule(this@ShopifyMatchingGame))
 
-        bind() from singleton {
-            SettingsPreferences(
-                instance()
-            )
-        }
+        bind() from singleton { SettingsPreferences(instance()) }
         bind() from singleton { ProductsRepository(instance()) }
         bind() from singleton { GameViewModelFactory(instance()) }
     }

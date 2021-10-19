@@ -45,15 +45,31 @@ class GameFragment : Fragment(), RecyclerViewClickListener, KodeinAware {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this, factory).get(GameViewModel::class.java)
-        viewModel.getProducts().observe(viewLifecycleOwner, Observer { cards ->
-            val newDeck = viewModel.createCardDeck(cards)
-            cardsRecyclerView.also {
-                it.layoutManager = GridLayoutManager(requireContext(), viewModel.gridLayoutColumn())
-                it.setHasFixedSize(true)
-                it.adapter = initAdapter(newDeck, this)
+
+        // Subscribing to the liveData changes to execute the callback
+        viewModel.subscribeToProductList(
+            owner = viewLifecycleOwner,
+            observer = Observer { cards ->
+                val newDeck = viewModel.createCardDeck(cards)
+                cardsRecyclerView.also {
+                    it.layoutManager = GridLayoutManager(requireContext(), viewModel.gridLayoutColumn())
+                    it.setHasFixedSize(true)
+                    it.adapter = initAdapter(newDeck, this)
+                }
             }
-        })
-        scoreObserver()
+        )
+
+        viewModel.subscribeToScore(
+            owner = viewLifecycleOwner,
+            observer = Observer { score ->
+                scoreId.text = getString(
+                    R.string.cards_found,
+                    score.toString(),
+                    viewModel.gridSize.toString()
+                )
+            }
+        )
+
         homeButton.setOnClickListener {
             this.startActivity(Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
         }
@@ -68,16 +84,6 @@ class GameFragment : Fragment(), RecyclerViewClickListener, KodeinAware {
                     flipCard(card)
             }
         }
-    }
-
-    private fun scoreObserver() {
-        viewModel.score.observe(viewLifecycleOwner, Observer { score ->
-            scoreId.text = getString(
-                R.string.cards_found,
-                score.toString(),
-                viewModel.gridSize.toString()
-            )
-        })
     }
 
     private fun initAdapter(

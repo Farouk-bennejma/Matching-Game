@@ -1,8 +1,6 @@
 package com.example.shopifymatchinggame.ui.game
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.shopifymatchinggame.model.Card
 import com.example.shopifymatchinggame.model.CardStatus
 import com.example.shopifymatchinggame.model.ProductList
@@ -13,7 +11,6 @@ class GameViewModel(
     private val repository: ProductsRepository
 ) : ViewModel() {
 
-    private var productList = MutableLiveData<ProductList>()
     private var deck = mutableListOf<Products>()
     val score = MutableLiveData<Int>()
     val cards = mutableListOf<Card>()
@@ -23,12 +20,16 @@ class GameViewModel(
 
     init {
         score.value = 0
+        repository.queryProducts()
     }
 
-    fun getProducts(): LiveData<ProductList> {
-        productList = repository.getProducts() as MutableLiveData<ProductList>
-        return productList
-    }
+   fun subscribeToProductList(owner: LifecycleOwner, observer: Observer<ProductList>) {
+       repository.productList.observe(owner, observer)
+   }
+
+   fun subscribeToScore(owner: LifecycleOwner, observer: Observer<Int>) {
+       score.observe(owner, observer)
+   }
 
     fun setUpDeck(products: List<Products>) {
         products.forEach {

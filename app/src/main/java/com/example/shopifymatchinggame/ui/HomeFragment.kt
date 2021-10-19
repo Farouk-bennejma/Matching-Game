@@ -10,7 +10,6 @@ import com.example.shopifymatchinggame.ui.game.GameFragment
 import com.example.shopifymatchinggame.ui.settings.SettingsFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
-@Suppress("DEPRECATION")
 class HomeFragment : Fragment() {
 
     override fun onCreateView(
@@ -26,7 +25,7 @@ class HomeFragment : Fragment() {
         startButton.setOnClickListener {
             val newGameFragment =
                 GameFragment()
-            val fragmentTransaction= requireFragmentManager().beginTransaction()
+            val fragmentTransaction= parentFragmentManager.beginTransaction()
                 .also {
                     it.replace(R.id.fragmentHolder, newGameFragment)
                     it.addToBackStack(null)
@@ -37,7 +36,7 @@ class HomeFragment : Fragment() {
         settingsButton.setOnClickListener {
             val newSettingsFragment =
                 SettingsFragment()
-            val fragmentTransaction = requireFragmentManager().beginTransaction()
+            val fragmentTransaction = parentFragmentManager.beginTransaction()
                 .also {
                     it.replace(R.id.fragmentHolder, newSettingsFragment)
                     it.addToBackStack(null)
